@@ -9,8 +9,8 @@ function Navigation() {
   return (
     <AppBar position="static" color="primary">
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          LinkyLog
+        <Typography variant="h6" component="div" color="white" sx={{ flexGrow: 1 }}>
+          URLShortener
         </Typography>
         <Tabs
           value={location.pathname}
