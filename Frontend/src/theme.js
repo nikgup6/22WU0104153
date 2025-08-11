@@ -1,17 +1,16 @@
-// src/theme.js
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#2C3E50', // A dark, professional blue
+      main: '#2C3E50', 
     },
     secondary: {
-      main: '#3498DB', // A bright, inviting blue
+      main: '#3498DB', 
     },
     background: {
-      default: '#F5F5F5', // A light gray background
-      paper: '#FFFFFF', // White for cards and papers
+      default: '#F5F5F5', 
+      paper: '#FFFFFF', 
     },
     text: {
       primary: '#2C3E50',

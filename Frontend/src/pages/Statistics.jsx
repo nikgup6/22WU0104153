@@ -1,4 +1,3 @@
-// src/pages/Statistics.jsx
 import React, { useState, useEffect } from 'react';
 import {
   Typography, Container, Paper, TextField, Button, Box,
@@ -10,15 +9,12 @@ import Log from '../Logger.mjs';
 function Statistics() {
   const [shortcode, setShortcode] = useState('');
   const [stats, setStats] = useState(() => {
-    // Retrieve data from localStorage on initial render
     const savedStats = localStorage.getItem('lastFetchedStats');
     return savedStats ? JSON.parse(savedStats) : null;
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const backendUrl = 'http://localhost:3001';
-
-  // Save the stats to localStorage whenever the state changes
   useEffect(() => {
     if (stats) {
       localStorage.setItem('lastFetchedStats', JSON.stringify(stats));
@@ -35,7 +31,7 @@ function Statistics() {
 
     setLoading(true);
     setError('');
-    setStats(null); // Clear previous stats
+    setStats(null); 
 
     try {
       const response = await axios.get(`${backendUrl}/shorturls/${shortcode}`);

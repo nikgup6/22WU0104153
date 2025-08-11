@@ -1,4 +1,4 @@
-// src/components/Navigation.jsx
+
 import React from 'react';
 import { AppBar, Toolbar, Typography, Tabs, Tab } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
@@ -14,8 +14,8 @@ function Navigation() {
         </Typography>
         <Tabs
           value={location.pathname}
-          textColor="inherit" // Sets the text color to white (which is inherited from the dark AppBar)
-          indicatorColor="secondary" // Uses the bright secondary color for the indicator
+          textColor="inherit" 
+          indicatorColor="secondary" 
           aria-label="navigation tabs"
         >
           <Tab label="URL Shortener" value="/" component={Link} to="/" />
