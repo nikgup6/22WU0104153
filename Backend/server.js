@@ -6,19 +6,15 @@ import Log from '../Logging_Middleware/Logger.mjs';
 
 const app = express();
 const PORT = 3001;
-// Use the cors middleware
+
 app.use(cors());
 
-// Middleware
+
 app.use(bodyParser.json());
 
-// In-memory data store for shortened URLs
 const urlDatabase = new Map();
-
-// Regex to validate a URL
 const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
 
-// Helper function to generate a unique shortcode
 const generateUniqueShortcode = () => {
     let shortcode;
     do {
@@ -27,18 +23,17 @@ const generateUniqueShortcode = () => {
     return shortcode;
 };
 
-// API Endpoint: Create Short URL
 app.post('/shorturls', async (req, res) => {
     const { url, validity, shortcode } = req.body;
-    const defaultValidity = 30; // Default validity in minutes
+    const defaultValidity = 30; 
 
-    // 1. Input Validation
+    
     if (!url || !urlRegex.test(url)) {
         await Log("backend", "error", "handler", "Invalid URL provided.");
         return res.status(400).json({ error: 'Invalid URL. Please provide a valid URL.' });
     }
 
-    // Check if a custom shortcode is provided and is valid
+    
     if (shortcode) {
         if (!/^[a-zA-Z0-9]{4,10}$/.test(shortcode)) {
             await Log("backend", "error", "handler", "Invalid custom shortcode format.");
@@ -50,12 +45,12 @@ app.post('/shorturls', async (req, res) => {
         }
     }
 
-    // 2. Shortcode Generation & Expiry Calculation
+    
     const finalShortcode = shortcode || generateUniqueShortcode();
     const expiryMinutes = validity && typeof validity === 'number' ? validity : defaultValidity;
     const expiryDate = new Date(Date.now() + expiryMinutes * 60000); // 60000 ms in a minute
 
-    // 3. Data Storage
+   
     const shortLink = `http://localhost:${PORT}/${finalShortcode}`;
     urlDatabase.set(finalShortcode, {
         originalUrl: url,
@@ -65,7 +60,7 @@ app.post('/shorturls', async (req, res) => {
         clicks: [],
     });
 
-    // 4. Logging & Response
+    
     await Log("backend", "info", "service", `URL shortened. Code: ${finalShortcode}`);
     res.status(201).json({
         shortlink: shortLink,
@@ -73,7 +68,7 @@ app.post('/shorturls', async (req, res) => {
     });
 });
 
-// API Endpoint: Retrieve URL Statistics
+
 app.get('/shorturls/:shortcode', async (req, res) => {
     const { shortcode } = req.params;
 
@@ -95,7 +90,7 @@ app.get('/shorturls/:shortcode', async (req, res) => {
     });
 });
 
-// API Endpoint: Redirection
+
 app.get('/:shortcode', async (req, res) => {
     const { shortcode } = req.params;
     const urlData = urlDatabase.get(shortcode);
@@ -123,7 +118,7 @@ app.get('/:shortcode', async (req, res) => {
     res.redirect(302, urlData.originalUrl);
 });
 
-// Start the server
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
     Log("backend", "info", "service", `Server started on port ${PORT}.`);
